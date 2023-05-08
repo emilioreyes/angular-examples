@@ -1,0 +1,44 @@
+<form [formGroup]="formPerson">
+  <div formArrayName="person" class="form">
+    <div *ngFor="let person of getPerson().controls; index as i">
+      <div [formGroupName]="i" class="form__person">
+        <div class="form__person-name">
+          <input type="text" formControlName="name" />
+          <div
+            class="form__person-errors"
+            *ngFor="let error of errorMessage.name"
+          >
+            <ng-container
+              *ngIf="
+                person.get('name').hasError(error.type) &&
+                (person.get('name').dirty || person.get('name').touched)
+              "
+            >
+              <span class="error-message">{{ error.message }}</span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form__person-lastname">
+          <input type="text" formControlName="lastname" />
+          <div
+            class="form__person-errors"
+            *ngFor="let error of errorMessage.lastname"
+          >
+            <ng-container
+              *ngIf="
+                person.get('lastname').hasError(error.type) &&
+                (person.get('lastname').dirty || person.get('lastname').touched)
+              "
+            >
+              <span class="error-message">{{ error.message }}</span>
+            </ng-container>
+          </div>
+        </div>
+        <button (click)="showPerson(person)">Show Person</button>
+        <button (click)="removePerson(i)">Delete Person</button>
+      </div>
+    </div>
+  </div>
+  <button (click)="addPerson()">Add Person</button>
+  <button (click)="submit()" [disabled]="!formPerson.valid">Send Info</button>
+</form>
